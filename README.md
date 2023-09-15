@@ -1,4 +1,4 @@
-# APS
+# APS - Criptografia em python
 
 **Atividades Pŕaticas Supervisionadas** são tarefas que os alunos precisam fazer para cumprir as exigências do curso. Essas atividades podem incluir idas à biblioteca, trabalhos em grupo ou individuais, resolução de exercícios supervisionados pelos professores, trabalhos científicos e seminários. 
 
