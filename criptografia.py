@@ -1,32 +1,57 @@
 import string
+import random
 
-CARACTERES = ['>', '_', 'q', ':', '²', 'T', '°', '6', '9', '@', '£', 'v', 'i', 
-              '+', 'U', '§', '¹', 'R', '#', '=', '¢', '¬', '$', '7', '1', '&', 
-              'b', 'º', 'G', '/', '8', '5', 'K', '*', '%', '!', ';', '0', ')', 
-              '?', 'ç', '-', 'm', '2', ',', '.', '³', '<', 'ª', '3', '(', 'a']
+# ALFABETO NORMAL COM TODOS OS CARACTERES (SEM ACENTOS),
+# TODOS OS NÚMEROS E AS PONTUAÇÕES.
+CARACTERES = []
+for i in string.printable:
+  CARACTERES.append(i)
 
-ALFABETO = string.ascii_letters
+# TIRA ALGUNS CARACTERES PROBLEMÁTICOS
+for i in ['\n', '\t', '\r', '\x0b', '\x0c']:
+  CARACTERES.remove(i)
 
-def criptografar (frase):
-  mensagem = ""
+# VARIÁVEL QUE ARMAZENA A QUANTIDADE DE CARACTERES
+QUANT_CARAC = len(CARACTERES)
+
+# FUNÇÃO PARA CRIAR UM NOVO ALFABETO
+# COM A SEMENTE DO USUÁRIO
+def criar_alfabeto(semente):
+  random.seed(int(semente))
+  alfabeto = []
+
+  while len(alfabeto) != QUANT_CARAC:
+    numero = random.randint(0, (QUANT_CARAC - 1))
+    caracter = CARACTERES[numero]
+    if not caracter in alfabeto:
+      alfabeto.append(caracter)
+
+  return alfabeto
+
+# FUNÇÃO PARA CRIPTOGRAFAR
+def criptografar(frase, semente):
+  novo_alfabeto = criar_alfabeto(semente)
+
+  nova_frase = ""
+
   for i in frase:
-    try: 
-      mensagem = mensagem + CARACTERES[ALFABETO.index(i)]
-    except:
-      if i == " " or i == "\n":
-        mensagem = mensagem + i
-      else: 
-        print(f'ERRO: O caractere "{i}" não está no novo dicionário!')
-  return mensagem
+    if i == "\n":
+      nova_frase += "\n"
+      continue
+    nova_frase += novo_alfabeto[CARACTERES.index(i)]
 
-def descriptografar (frase):
-  mensagem = ""
+  return nova_frase
+
+# FUNÇÃO PARA DESCRIPTOGRAFAR
+def descriptografar(frase, semente):
+  novo_alfabeto = criar_alfabeto(semente)
+
+  nova_frase = ""
+
   for i in frase:
-    try: 
-      mensagem  = mensagem + ALFABETO[CARACTERES.index(i)]
-    except:
-      if i == " " or i == "\n":
-        mensagem = mensagem + i
-      else: 
-        print(f'ERRO: O caractere "{i}" não está no novo dicionário!')
-  return mensagem
+    if i == "\n":
+      nova_frase += "\n"
+      continue
+    nova_frase += CARACTERES[novo_alfabeto.index(i)]
+
+  return nova_frase
