@@ -16,6 +16,8 @@ def criar_resposta (mensagem, semente, codigo):
       return criptografia.descriptografar(mensagem, semente)
     else:
       return "Digite uma chave!!"
+  else:
+    return "Digite um código válido!\n0- Criptografar\n1- Descriptografar"
 
 # Se o usuário não enviar o texto pela linha de comando:
 if sys.stdin.isatty():
@@ -36,7 +38,8 @@ if sys.stdin.isatty():
 # Se o usuário enviar o texto pela linha de comando:
 else:
   mensagem = sys.stdin.read()
-  semente = input("Digite sua chave: ")
-  print(criptografia.criptografar(mensagem, semente))
+  semente = sys.argv[1]
+  codigo = int(sys.argv[2])
+  print(criar_resposta(mensagem, semente, codigo))
 
 # vim: set shiftwidth=2 tabstop=2:
