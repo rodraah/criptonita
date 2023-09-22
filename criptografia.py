@@ -7,7 +7,7 @@ CARACTERES = []
 for i in string.printable:
   CARACTERES.append(i)
 
-# TIRA ALGUNS CARACTERES PROBLEMÁTICOS
+# REMOVE ALGUNS CARACTERES PROBLEMÁTICOS
 for i in ['\n', '\t', '\r', '\x0b', '\x0c']:
   CARACTERES.remove(i)
 
@@ -38,6 +38,10 @@ def criptografar(frase, semente):
     if i == "\n":
       nova_frase += "\n"
       continue
+    #TODO! SOLUÇÃO TEMPORÁRIA PRA CARACTERES QUE NÃO TEM NA LISTA
+    elif i not in CARACTERES:
+      nova_frase += i
+      continue
     nova_frase += novo_alfabeto[CARACTERES.index(i)]
 
   return nova_frase
@@ -51,6 +55,10 @@ def descriptografar(frase, semente):
   for i in frase:
     if i == "\n":
       nova_frase += "\n"
+      continue
+    #TODO! SOLUÇÃO TEMPORÁRIA PRA CARACTERES QUE NÃO TEM NA LISTA
+    elif not i in CARACTERES:
+      nova_frase += i
       continue
     nova_frase += CARACTERES[novo_alfabeto.index(i)]
 
