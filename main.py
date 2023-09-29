@@ -3,7 +3,7 @@ from nicegui import ui
 # Importa o arquivo criptografia.py
 import criptografia
 
-def criar_resposta (mensagem, semente, codigo):
+def criar_resposta (mensagem, semente, codigo=0):
   # Se o código for 0, criptografa
   if codigo == 0:
     if semente != "":
@@ -39,7 +39,10 @@ if sys.stdin.isatty():
 else:
   mensagem = sys.stdin.read()
   semente = sys.argv[1]
-  codigo = int(sys.argv[2])
+  try:
+    codigo = int(sys.argv[2])
+  except:
+    codigo = 0
   print(criar_resposta(mensagem, semente, codigo))
 
 # vim: set shiftwidth=2 tabstop=2:
