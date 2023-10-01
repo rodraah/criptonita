@@ -7,6 +7,10 @@ CARACTERES = []
 for i in string.printable:
   CARACTERES.append(i)
 
+# ADICIONA ALGUNS CARACTERES IMPORTANTES (ACENTOS)
+for i in ['á', 'à', 'ã', 'é', 'ê', 'í', 'ó', 'ô', 'õ', 'ç']:
+  CARACTERES.append(i)
+
 # REMOVE ALGUNS CARACTERES PROBLEMÁTICOS
 for i in ['\n', '\t', '\r', '\x0b', '\x0c']:
   CARACTERES.remove(i)
