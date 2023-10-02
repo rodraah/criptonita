@@ -1,32 +1,37 @@
 import random
-from math import gcd, pow
+from math import gcd
 
-# RETORNA DOIS VALORES ALEATÓRIOS
-x = random.randint(1, 100)
-y = random.randint(1, 100)
+# # RETORNA DOIS VALORES ALEATÓRIOS
+# x = random.randint(1, 100)
+# y = random.randint(1, 100)
 
-#FUNÇÃO PARA VALIDAR PRIMOS E GERA O "N"
-def dNums(x, y):
-    #VALIDAÇÃO DE PRIMOS: valor x
-    divisor, divisor1 = 0, 0
-    for cont in range(1, 100):
-        if x % cont == 0:
-            divisor += 1
-    if divisor <= 2:
-        print(x)
-    else:
-        return False
-    # VALIDAÇÃO DE PRIMOS: valor y
-    for cont1 in range(1, 100):
-        if y % cont1 == 0:
-            divisor1 += 1
-    if divisor1 <= 2:
-        print(y)
-    else:
-        return False
-    return x, y
+# #FUNÇÃO PARA VALIDAR PRIMOS E GERA O "N"
+# def dNums(x, y):
+#     #VALIDAÇÃO DE PRIMOS: valor x
+#     divisor, divisor1 = 0, 0
+#     for cont in range(1, 100):
+#         if x % cont == 0:
+#             divisor += 1
+#     if divisor <= 2:
+#         print(x)
+#     else:
+#         return False
+#     # VALIDAÇÃO DE PRIMOS: valor y
+#     for cont1 in range(1, 100):
+#         if y % cont1 == 0:
+#             divisor1 += 1
+#     if divisor1 <= 2:
+#         print(y)
+#     else:
+#         return False
+#     return x, y
 
-print(dNums(x, y))
+# print(dNums(x, y))
+
+# IGNOREI SEU SISTEMA DE VALIDAÇÃO DE NÚMEROS PRIMOS
+# E ESCOLHI DOIS NÚMEROS PRIMOS
+x = 13
+y = 11
 
 #VALOR DE "N"
 n = x * y
@@ -41,7 +46,8 @@ while True:
     if e > 1 and e < phi and gcd(phi, e) == 1:
         digite = input("Digite algo: ")
         for i in digite:
-            kh = pow(ord(i), e)
+            kh = ord(i)
+            kh = kh ** e
             kh = kh % n
             mensagem.append((kh))
         break
@@ -50,14 +56,19 @@ while True:
 print("MENSAGEM CRIPTOGRAFADA PUBLICA ", mensagem)
 
 #Valor de D para descriptografar
-d = e % phi
+# O VALOR DE D PRECISA ATENDER OS REQUISITOS:
+# D * E % PHI = 1
+d = 1
+while (d * e % phi) != 1:
+    d += 1
+
+# print(d)
 
 #DESCRIPTOGRAFAR A MENSAGEM
-lista = []
+descriptografada = ""
 for i in mensagem:
-    result = i ** d
-    texto = int(result % n)
-    letra = chr(texto)
-    lista.append(letra)
-    i += 1
-print("EM TESE, MENSAGEM DESCRIPTOGRAFADA", lista)
+    i = i ** d
+    i = i % n
+    i = chr(i)
+    descriptografada += i
+print(f'MENSAGEM DESCRIPTOGRAFADA: "{descriptografada}"')
