@@ -1,23 +1,7 @@
 import sys
 from nicegui import ui
-# Importa o arquivo criptografia.py
-import criptografia
 
-def criar_resposta (mensagem, semente, codigo=0):
-  # Se o código for 0, criptografa
-  if codigo == 0:
-    if semente != "":
-      return criptografia.criptografar(mensagem, semente)
-    else:
-      return "Digite uma chave!!"
-  # Se o código for 1, descriptografa
-  elif codigo == 1:
-    if semente != "":
-      return criptografia.descriptografar(mensagem, semente)
-    else:
-      return "Digite uma chave!!"
-  else:
-    return "Digite um código válido!\n0- Criptografar\n1- Descriptografar"
+import rsa
 
 # Se o usuário não enviar o texto pela linha de comando:
 if sys.stdin.isatty():
@@ -26,13 +10,15 @@ if sys.stdin.isatty():
     titulo = ui.label('CRIPTONITA').classes('mx-auto')
     mensagem = ""
     ui.input(label="Mensagem").bind_value(globals(), 'mensagem').classes('justify-center w-full')
-    semente = ""
-    ui.input(label="Chave").bind_value(globals(), 'semente').classes('justify-center w-full')
-    with ui.row():
+    chave_publica = ""
+    ui.input(label="Chave Pública").bind_value(globals(), 'chave_publica').classes('justify-center w-full')
+    chave_privada = ""
+    ui.input(label="Chave Privada").bind_value(globals(), 'chave_privada').classes('justify-center w-full')
+    with ui.row().classes('mx-auto'):
       ui.button('Criptografar', on_click=lambda: resultado.set_text(
-        f'Resultado: {criar_resposta(mensagem, semente, 0)}')).props('push')
+        f'Resultado: {rsa.criar_resposta(mensagem, chave_publica, chave_privada, 0)}')).props('push')
       ui.button('Descriptografar', on_click=lambda: resultado.set_text(
-        f'Resultado: {criar_resposta(mensagem, semente, 1)}')).props('push')
+        f'Resultado: {rsa.criar_resposta(mensagem, chave_publica, chave_privada, 1)}')).props('push')
     resultado = ui.label()
   ui.run()
 # Se o usuário enviar o texto pela linha de comando:
