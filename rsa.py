@@ -51,59 +51,60 @@ def gera_num_aleatorio():
   '''
   return random.randint(100,1000)
 
+def criar_chaves(mensagem):
+  # Gera P e Q
+  # O P SERÁ A QUANTIDADE DE CARACTERES
+  # ELEVADO A 2
+  p = len(mensagem) ** 2
+
+  # O Q SERÁ A DATA ATUAL MOD 10
+  # ELEVADO A 5
+  q = int(time.time()) % 100
+
+  # E força eles a serem primos
+  while True:
+    if not é_primo(p):
+      p += 1
+    if not é_primo(q):
+      q += 1
+    if é_primo(p) and é_primo(q):
+      break
+
+  # N = P * Q
+  n = p * q
+
+  # Calculo de phi
+  phi = (p-1) * (q-1)
+
+  # "E" é um número aleatório que
+  # preenche os requisitos abaixo
+  e = gera_num_aleatorio()
+  while True:
+    a = mdc(phi, e)
+    if e > 1 and phi > e and é_primo(e):
+      if a == 1:
+        break
+    e += 1
+  
+  return n,e,phi
 
 def criar_resposta(x, publica, privada, codigo):
-  # Mensagem:
-  mensagem = []
-  for i in x:
-    i = ord(i)
-    mensagem.append(i)
-
   # Se o código for 0, criptografa
   if codigo == 0:
+    # Mensagem:
+    mensagem = []
+    for i in x:
+      i = ord(i)
+      mensagem.append(i)
 
     # Se o usuário não digitar as chaves, gera elas
     if not publica:
-      # Gera P e Q
-      # O P SERÁ A QUANTIDADE DE CARACTERES
-      # ELEVADO A 2
-      p = len(mensagem) ** 2
-
-      # O Q SERÁ A DATA ATUAL MOD 10
-      # ELEVADO A 5
-      q = int(time.time()) % 10 ** 5
-
-      # E força eles a serem primos
-      while True:
-        if not é_primo(p):
-          p += 1
-        if not é_primo(q):
-          q += 1
-        if é_primo(p) and é_primo(q):
-          break
-
-      # N = P * Q
-      n = p * q
-
-      # Calculo de phi
-      phi = (p-1) * (q-1)
-
-      # "E" é um número aleatório que
-      # preenche os requisitos abaixo
-      e = gera_num_aleatorio()
-      while True:
-        a = mdc(phi, e)
-        if e > 1 and phi > e and é_primo(e):
-          if a == 1:
-            break
-        e += 1
+      n,e,phi = criar_chaves(mensagem)
     else:
       n = int(publica)
       e = int(privada)
 
     # Criptografar
-    # Eleva por E e mod N
-
     mensagem_criptografada = []
     for i in mensagem:
       i = i ** e
@@ -111,28 +112,42 @@ def criar_resposta(x, publica, privada, codigo):
       mensagem_criptografada.append(i)
 
     print(f'Mensagem criptografada: {mensagem_criptografada}')
+    # Chave privada para descriptografar
+    try: 
+      d = 1
+      while (d * e % phi) != 1:
+        d += 1
+    except:
+      d = ""
     
     # Chave pública é o N e o E
     print(f'Sua chave pública é: "{n}" e "{e}"')
-    return [mensagem_criptografada, n, e]
+    return [mensagem_criptografada, n, e, d]
 
   # Se o código for 1, descriptografa
   elif codigo == 1:
 
     if not privada:
       # Chave privada (D)
-      d = 1
-      while (d * e % phi) != 1:
-        d += 1
+      return "Digite uma chave privada!!"
     else:
       n = int(publica)
       d = int(privada)
 
-    print(f'Sua chave privada é "{d}"')
+    # Tranforma a mensagem em uma lista válida
+    try: 
+      mensagem = f'{x}'.replace('[', '').replace(']', '')
+      mensagem = list(mensagem.split(', '))
+      for i in range(0, len(mensagem)):
+        mensagem[i] = int(mensagem[i])
+    except:
+      mensagem = "Erro ao descriptografar. Verifique sua chave e sua mensagem."
+      print(mensagem)
+      return [mensagem]
+
+    print(mensagem)
 
     # Descriptografar
-    # Eleva por D e mod N
-
     mensagem_descriptografada = ""
     for i in mensagem:
       i = i ** d
@@ -141,7 +156,7 @@ def criar_resposta(x, publica, privada, codigo):
       mensagem_descriptografada += i
 
     print(f'Mensagem descriptografada: {mensagem_descriptografada}')
-    return [mensagem_descriptografada, n, d]
+    return [mensagem_descriptografada, n, d, None]
 
   else:
     return f'{codigo} não é um código válido!!'
