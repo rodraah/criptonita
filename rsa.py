@@ -53,13 +53,15 @@ def gera_num_aleatorio():
 
 def criar_chaves(mensagem):
   # Gera P e Q
-  # O P SERÁ A QUANTIDADE DE CARACTERES
-  # ELEVADO A 2
-  p = len(mensagem) ** 2
 
-  # O Q SERÁ A DATA ATUAL MOD 10
+  # O P SERÁ A DATA ATUAL MOD 10
   # ELEVADO A 5
-  q = int(time.time()) % 100
+  p = int(time.time()) % 10 ** 5
+
+  # O Q SERÁ UM INTEIRO ALEATÓRIO
+  # GERADO COM O P COMO SEED
+  random.seed(p)
+  q = random.randint(5,100)
 
   # E força eles a serem primos
   while True:
@@ -69,6 +71,8 @@ def criar_chaves(mensagem):
       q += 1
     if é_primo(p) and é_primo(q):
       break
+  print(f'p: {p}')
+  print(f'q: {q}')
 
   # N = P * Q
   n = p * q
@@ -136,16 +140,15 @@ def criar_resposta(x, publica, privada, codigo):
 
     # Tranforma a mensagem em uma lista válida
     try: 
-      mensagem = f'{x}'.replace('[', '').replace(']', '')
+      mensagem = x
+      for i in ['[', ']']:
+        mensagem = mensagem.replace(i, '')
       mensagem = list(mensagem.split(', '))
       for i in range(0, len(mensagem)):
         mensagem[i] = int(mensagem[i])
     except:
       mensagem = "Erro ao descriptografar. Verifique sua chave e sua mensagem."
-      print(mensagem)
       return [mensagem]
-
-    print(mensagem)
 
     # Descriptografar
     mensagem_descriptografada = ""
