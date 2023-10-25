@@ -56,7 +56,7 @@ def criar_chaves(mensagem):
 
   # O P SERÁ A DATA ATUAL MOD 10
   # ELEVADO A 5
-  p = int(time.time()) % 10 ** 5
+  p = int(time.time()) % 10 ** 4
 
   # O Q SERÁ UM INTEIRO ALEATÓRIO
   # GERADO COM O P COMO SEED
