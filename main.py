@@ -22,9 +22,14 @@ def processar_resposta(x, y, z, cod):
     resultado = f'''<p>Mensagem descriptografada: <br>
       {resultado}</p>'''
 
+def limpar():
+  global resultado, mensagem, chave_publica, chave_privada
+  mensagem, chave_publica, chave_privada = "", "", ""
+  resultado = "Digite algo para criptografar/descriptografar"
+
 def botao_limpar():
   botao = ui.button('Limpar').classes('mx-auto').props('push')
-  botao.on('click', lambda: desenhar_interface.refresh())
+  botao.on('click', lambda: limpar())
 
 def area_resposta():
   global resultado
@@ -32,7 +37,6 @@ def area_resposta():
     with ui.scroll_area():
       ui.html().bind_content(globals(), 'resultado')
 
-@ui.refreshable
 def desenhar_interface():
   global mensagem, chave_publica, chave_privada, resultado
   with ui.card().style('width: 450px; height: 500px; margin: auto'):
