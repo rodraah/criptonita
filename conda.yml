@@ -1,0 +1,8 @@
+name: APS
+
+dependencies: 
+  - python=3.8
+  - pip
+  - pip:
+    - nicegui==1.4.0
+    - pyinstaller
