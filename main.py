@@ -54,11 +54,17 @@ def desenhar_interface():
     resultado = f'Digite algo para criptografar/descriptografar'
     area_resposta()
     # ui.html().bind_content(globals(), 'resultado')
-  ui.run()
+  ui.run(port=porta)
 
 # Se o usuário não enviar o texto pela linha de comando,
 # esenha a interface
 if stdin.isatty():
+  # Porta para rodar o servidor local
+  try:
+    porta = int(argv[1])
+  except:
+    porta = 8080
+
   desenhar_interface()
 # Se o usuário enviar o texto pela linha de comando:
 else:
