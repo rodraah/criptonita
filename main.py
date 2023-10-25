@@ -1,14 +1,14 @@
-import sys
+from sys import stdin, argv
 from nicegui import ui
 
-import rsa
+from rsa import criar_resposta
 
 codigo = 0
 
 def processar_resposta(x, y, z, cod):
   global resultado, chave_publica, chave_privada, codigo
   codigo = cod
-  resposta = rsa.criar_resposta(x, y, z, codigo)
+  resposta = criar_resposta(x, y, z, codigo)
   if len(resposta) == 1:
     resultado = resposta[0]
     return None
@@ -54,16 +54,22 @@ def desenhar_interface():
 
 # Se o usuário não enviar o texto pela linha de comando,
 # esenha a interface
-if sys.stdin.isatty():
+if stdin.isatty():
   desenhar_interface()
 # Se o usuário enviar o texto pela linha de comando:
 else:
-  mensagem = sys.stdin.read()
-  semente = sys.argv[1]
+  mensagem = stdin.read()
+  codigo = int(argv[1])
+  print(f'codigo: {codigo}')
   try:
-    codigo = int(sys.argv[2])
+    chave_publica = argv[2]
+    print(f'chave_publica: {chave_publica}')
+    chave_privada = argv[3]
+    print(f'chave_privada: {chave_privada}')
   except:
+    chave_publica = None
+    chave_privada = None
     codigo = 0
-  print(criar_resposta(mensagem, semente, codigo))
+  print(criar_resposta(mensagem, chave_publica, chave_privada, codigo))
 
 # vim: set shiftwidth=2 tabstop=2:
