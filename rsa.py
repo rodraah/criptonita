@@ -51,7 +51,7 @@ def gera_num_aleatorio():
   '''
   return random.randint(100,1000)
 
-def criar_chaves(mensagem):
+def criar_chaves():
   # Gera P e Q
 
   # O P SERÁ A DATA ATUAL MOD 10
@@ -103,7 +103,7 @@ def criar_resposta(x, publica, privada, codigo):
 
     # Se o usuário não digitar as chaves, gera elas
     if not publica:
-      n,e,phi = criar_chaves(mensagem)
+      n,e,phi = criar_chaves()
     else:
       n = int(publica)
       e = int(privada)
